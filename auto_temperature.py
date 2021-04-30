@@ -7,6 +7,34 @@ import time
 import datetime
 import os
 import sys
+import smtplib
+from email.mime.text import MIMEText
+from email.header import Header
+ 
+# 第三方 SMTP 服务
+mail_host="smtp.seu.edu.cn"  #设置服务器
+mail_user = os.environ["SENDER"]
+
+mail_user="XXXX"    #用户名
+mail_pass="XXXXXX"   #口令 
+ 
+ 
+sender = os.environ["SENDER"]
+receivers = ['sadasdasdas@qq.com']  # 接收邮件，可设置为你的QQ邮箱或者其他邮箱
+receivers[0] = os.environ["RECEIVERS"]
+
+message = MIMEText('打卡成功', 'plain', 'utf-8')
+message['From'] = Header("hongbinHe666", 'utf-8')
+message['To'] =  Header("hhb", 'utf-8')
+ 
+subject = '今日体温上报成功'
+message['Subject'] = Header(subject, 'utf-8')
+
+
+
+
+
+
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument('--headless')
 chrome_options.add_argument('--disable-gpu')
@@ -92,6 +120,16 @@ def main():
             driver.find_element_by_xpath('/html/body/div[61]/div[1]/div[1]/div[2]/div[2]/a[1]').click()
             print(name + '\t体温上报成功')
             msg += name + '\t体温上报成功' + '\n\n'
+            smtpObj = smtplib.SMTP() 
+            #######替换为########
+            smtpObj = smtplib.SMTP_SSL(mail_host,port=465)   
+            #登录到服务器
+            smtpObj.login(mail_user,mail_pass) 
+            #发送
+            smtpObj.sendmail(
+                sender,receivers,message.as_string()) 
+            #退出
+            smtpObj.quit() 
         else:
            print(name + '\t未主动上报一次来完善疫苗信息')
            msg += name + '\t未主动上报一次来完善疫苗信息' + '\n\n'
