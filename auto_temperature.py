@@ -15,8 +15,8 @@ from email.header import Header
 mail_host="smtp.seu.edu.cn"  #设置服务器
 mail_user = os.environ["SENDER"]
 
-mail_user="XXXX"    #用户名
-mail_pass="XXXXXX"   #口令 
+mail_user=os.environ["SENDER"]
+mail_pass=os.environ["PASSWORD"]
  
  
 sender = os.environ["SENDER"]
